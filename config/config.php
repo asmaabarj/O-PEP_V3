@@ -1,6 +1,6 @@
 <?php
 define("HOST","localhost");
-define("DB","opep");
+define("DB","opep1");
 define("USER","root");
 define("PASSWORD","");
 

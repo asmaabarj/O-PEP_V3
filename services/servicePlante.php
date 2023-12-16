@@ -1,24 +1,25 @@
 <?php
-require("../config/database.php");
+
+require_once("../config/database.php");
+require_once("../models/plante.php");
+require_once("../models/Product.php");
+
 
 class ServicePlante extends Database
 {
     protected $db;
 
-    public function addPlante(Plante $plante)
+    public function addPlante(Plant $plante)
     {
         $this->db = $this->connect();
 
-        // Get properties from the Plante object
+
         $nom_plante = $plante->getNomPlante();
         $prix_plante = $plante->getPrix();
         $image_plante = $plante->getImagePlant();
-        
-        // Get the associated category ID
-        $categorie = $plante->getCategorie();
-        $idCategorie = $categorie->getIdCategorie();
+        $idCategorie = $plante->getIdCategorie();
 
-        // Prepare and execute the SQL statement
+
         $new_plante = "INSERT INTO plante (nomPlante, idCategorie, imagePlant, prix) 
         VALUES (:nomPlant, :idCat, :imagePlant, :prixPlant)";
         $stmt = $this->db->prepare($new_plante);
@@ -29,5 +30,47 @@ class ServicePlante extends Database
 
         $stmt->execute();
     }
+    public function ShowPlantes()
+    {
+        $this->db = $this->connect();
+
+        $query = "SELECT p.*, c.nomCategorie
+            FROM plante p JOIN categorie c ON p.idCategorie = c.idCategorie";
+
+        $plants = $this->db->query($query);
+        $result = $plants->fetchAll(PDO::FETCH_ASSOC);
+        $plantes = array();
+
+        foreach ($result as $plnt) {
+            $combinedData = new Product(
+                $plnt["nomPlante"],
+                $plnt["idCategorie"],
+                $plnt["imagePlant"],
+                $plnt["prix"],
+                $plnt["nomCategorie"],
+                $plnt["idPlante"]
+            );
+
+            $plantes[] = $combinedData;
+        }
+
+        return $plantes;
+    }
+    public function DeletePlant($id)
+    {
+        $this->db = $this->connect();
+
+        $deletePlante = "DELETE FROM plante WHERE idPlante = :id";
+        $statement = $this->db->prepare($deletePlante);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        try {
+            $statement->execute();
+        } catch (PDOException $th) {
+            die($th->getMessage());
+        }
+    }
+
+
 }
+
 ?>

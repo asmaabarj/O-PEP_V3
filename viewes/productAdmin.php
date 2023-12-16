@@ -1,32 +1,15 @@
-
 <?php
-
-require("../models/Categorie.php");
-require("../models/plante.php");
-require("../services/serviceCategorie.php");
-require("../services/servicePlante.php");
-
-if (isset($_POST['submit'])) {
-    $newPlantName = $_POST['plantName'];
-    $selectedCategoryId = $_POST['categorySelect'];  
-  
-
-    $newPlantImage = $_POST['image'];
-    $newPlantPrice = $_POST['price'];
-
-    $plante = new Plant($newPlantName, $selectedCategoryId, $newPlantImage, $newPlantPrice);
-
-    $serviceplant = new ServicePlante();
-    $serviceplant->addPlante($plante);
+require_once("../services/servicePlante.php");
+if (isset($_POST['deleteplante']) && isset($_POST['delete'])) {
+    $id = $_POST['delete'];
+    $delete = new ServicePlante();
+    $delete->DeletePlant($id);
 }
-$serviceCat = new ServiceCategorie();
-$selectedCategory = $serviceCat->selectCategories();
+
+
+$planteafich = new ServicePlante();
+$Plantes = $planteafich->ShowPlantes();
 ?>
-
-                      
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,9 +19,15 @@ $selectedCategory = $serviceCat->selectCategories();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O'PEP</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this plant?");
+        }
+    </script>
 </head>
 
 <body>
+
 <header class="header sticky w-[100%] top-0 bg-white shadow-md flex items-center justify-between px-8 py-02 z-50 h-[10vh]	">
     <a href="productAdmin.php">
         <img src="images/logoPage.png" alt="" class="md:h-[50px] md:w-[100px] h-[35px] w-[90px]">
@@ -62,43 +51,37 @@ $selectedCategory = $serviceCat->selectCategories();
                     <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg></a>
 </header>
-    <section class="flex justify-center items-center h-screen">
-        <form action="" method="POST"  class="w-1/3">
-            <?php if (isset($error)) : ?>
-                <p class="text-red-500"><?php echo $error; ?></p>
-            <?php endif; ?>
 
-            <div class="mb-4">
-                <label for="image" class="block text-sm font-bold text-gray-600">Plant Image:</label>
-                <input type="text" name="image"   class="border border-gray-300 p-2 w-full">
-            </div>
-            <div class="mb-4">
-                <label for="plantName" class="block text-sm font-bold text-gray-600">Plant Name:</label>
-                <input type="text" name="plantName"  class="border border-gray-300 p-2 w-full">
-            </div>
-            <div class="mb-4">
-                <label for="categorySelect" class="block text-sm font-bold text-gray-600">Category:</label>
-                <select name="categorySelect" class="border border-gray-300 p-2 w-full">
-    <option value="">Select a category</option>
-    <?php
-    
-     foreach ($selectedCategory as $categorie) : ?>
-<option value="<?php echo $categorie["idCategorie"] ?>"><?php echo $categorie["nomCategorie"] ?></option>
-    <?php endforeach; ?>
-</select>
 
-            </div>
-            <div class="mb-4">
-                <label for="price" class="block text-sm font-bold text-gray-600">Price:</label>
-                <input type="text" name="price" id="price" class="border border-gray-300 p-2 w-full">
-            </div>
-            <div>
-                <button type="submit" name="submit" class="bg-green-500 text-white px-4 py-2 rounded">Add Plant</button>
-            </div>
-        </form>
-    </section>
 
-    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+
+
+
+
+<section class="flex flex-wrap justify-between w-[90%] m-auto">
+  
+   <?php foreach($Plantes as $plant):?>
+                <div class= "h-[70vh] w-[23vw] m-[30px] ">
+                    <div><img src="<?= $plant->getImagePlant()?>"  class="h-[50vh] w-[100%]"></div>
+                    <div>
+                        <div>
+                            <h1 class="font-bold text-center"><?= $plant->getNomPlante()?></h1>
+                            <p class="uppercase text-green-800 font-semibold text-center"><?= $plant->getNomCategorie()?></p>
+                            <p class="font-normal text-center"><?= $plant->getPrix()?> MAD</p>
+                        </div>
+                        <div class = " flex justify-center">
+                        <form action="productAdmin.php" method="post" class="flex bg-red-700 mt-[10px] p-[5px] items-center rounded-[2px] text-white justify-center cursor-pointer  w-[60%] font-semibold" onsubmit="return confirmDelete();">
+                        <input type="hidden" name="delete" value="<?= $plant->getIdPlant() ?>">
+                        <input type="submit" class="cursor-pointer" name="deleteplante" value="DELETE">
+                    </form>
+
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach;?>
+
+</section>
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet"
         href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <footer class="relative bg-green-900 pt-8 pb-6">
@@ -143,7 +126,10 @@ $selectedCategory = $serviceCat->selectCategories();
         </div>
     </footer>
 
-    <script>
+
+
+
+<script>
     function burgermenu(){
     const shown = document.querySelector('.sidebar')
     shown.style.display = 'flex'
@@ -153,6 +139,8 @@ function quittemenu(){
     shown.style.display = 'none'
 }
 </script>
+
+
 </body>
 
 </html>

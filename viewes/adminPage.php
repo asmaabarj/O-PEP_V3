@@ -1,41 +1,42 @@
-
 <?php
+include 'config.php';
+session_start();
+$CliENt="SELECT * FROM utilisateur WHERE idRole=2";
+$res=$conn->query("$CliENt");
 
-require("../models/Categorie.php");
-require("../models/plante.php");
-require("../services/serviceCategorie.php");
-require("../services/servicePlante.php");
 
-if (isset($_POST['submit'])) {
-    $newPlantName = $_POST['plantName'];
-    $selectedCategoryId = $_POST['categorySelect'];  
-  
 
-    $newPlantImage = $_POST['image'];
-    $newPlantPrice = $_POST['price'];
 
-    $plante = new Plant($newPlantName, $selectedCategoryId, $newPlantImage, $newPlantPrice);
 
-    $serviceplant = new ServicePlante();
-    $serviceplant->addPlante($plante);
-}
-$serviceCat = new ServiceCategorie();
-$selectedCategory = $serviceCat->selectCategories();
+
+$plantCat="SELECT
+nomCategorie,
+(SELECT COUNT(idPlante) FROM plante WHERE idCategorie = c.idCategorie) AS totalPlants
+FROM
+categorie AS c;
+";
+$sqlRes=$conn->query("$plantCat");
+
+
+$A="SELECT COUNT(idPlante) AS D FROM plante  ";
+$sqlA=$conn->query("$A");
+$B=$sqlA->fetch_assoc();
+
+$x="SELECT COUNT(idCommande) AS y FROM commande  ";
+$sqlx=$conn->query("$x");
+$z=$sqlx->fetch_assoc();
 ?>
-
-                      
-
 
 
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O'PEP</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body>
@@ -62,43 +63,110 @@ $selectedCategory = $serviceCat->selectCategories();
                     <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg></a>
 </header>
-    <section class="flex justify-center items-center h-screen">
-        <form action="" method="POST"  class="w-1/3">
-            <?php if (isset($error)) : ?>
-                <p class="text-red-500"><?php echo $error; ?></p>
-            <?php endif; ?>
 
-            <div class="mb-4">
-                <label for="image" class="block text-sm font-bold text-gray-600">Plant Image:</label>
-                <input type="text" name="image"   class="border border-gray-300 p-2 w-full">
-            </div>
-            <div class="mb-4">
-                <label for="plantName" class="block text-sm font-bold text-gray-600">Plant Name:</label>
-                <input type="text" name="plantName"  class="border border-gray-300 p-2 w-full">
-            </div>
-            <div class="mb-4">
-                <label for="categorySelect" class="block text-sm font-bold text-gray-600">Category:</label>
-                <select name="categorySelect" class="border border-gray-300 p-2 w-full">
-    <option value="">Select a category</option>
-    <?php
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<h1 class=" font-bold text-[20px] w-[100%] h-[10vh] flex items-center justify-center">CLIENTS</h1>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th  class="px-6 py-3">
+First name                </th>
+                <th  class="px-6 py-3">
+                  Last name
+                </th>
+                <th  class="px-6 py-3">
+                    E-mail
+                </th>
+                
+               
+            </tr>
+        </thead>
+
+        <tbody>
+       
+         <?php  while($rowClient=$res->fetch_assoc()){
     
-     foreach ($selectedCategory as $categorie) : ?>
-<option value="<?php echo $categorie["idCategorie"] ?>"><?php echo $categorie["nomCategorie"] ?></option>
-    <?php endforeach; ?>
-</select>
+   echo'
+            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                '.$rowClient["nomUtilisateur"].'
+                </th>
+                <td class="px-6 py-4">
+                '.$rowClient["prénomUtilisateur"].'
+                </td>
+                <td class="px-6 py-4">
+                '.$rowClient["emailUtilisateur"].'
+                </td>
+                
+                
+            </tr>';
+        }?>
+        </tbody>
+    </table>
+</div>
 
-            </div>
-            <div class="mb-4">
-                <label for="price" class="block text-sm font-bold text-gray-600">Price:</label>
-                <input type="text" name="price" id="price" class="border border-gray-300 p-2 w-full">
-            </div>
-            <div>
-                <button type="submit" name="submit" class="bg-green-500 text-white px-4 py-2 rounded">Add Plant</button>
-            </div>
-        </form>
-    </section>
 
-    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<h1 class=" font-bold text-[20px] w-[100%] h-[10vh] flex items-center justify-center">PLANTS </h1>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th  class="px-6 py-3">
+Categories name                </th>
+                <th  class="px-6 py-3">
+                 plants number
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+       
+         <?php  while($rowPlant=$sqlRes->fetch_assoc()){
+    
+   echo'
+            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                '.$rowPlant["nomCategorie"].'
+                </th>
+                <td class="px-6 py-4">
+                '.$rowPlant["totalPlants"].'
+                </td>
+                
+                
+            </tr>';
+        }?>
+
+        <tr><th class="px-6 py-3">TOTAL</th>
+<th>
+    <?php echo $B["D"]; ?>
+</th>
+    </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="relative overflow-x-auto h-[30vh] shadow-md sm:rounded-lg">
+<h1 class="font-bold text-[20px] w-[100%] h-[10vh] flex items-center justify-center">COMMANDE </h1>
+    <table class="w-[70%]  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th  class="px-6 py-3">
+total commands               </th>
+                <td  class="px-6 py-3">
+                <?php echo $z["y"]; ?>
+                </td>
+
+            </tr>
+        </thead>
+
+        
+    </table>
+</div>
+
+
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet"
         href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <footer class="relative bg-green-900 pt-8 pb-6">
@@ -153,6 +221,7 @@ function quittemenu(){
     shown.style.display = 'none'
 }
 </script>
+
 </body>
 
 </html>

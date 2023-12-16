@@ -1,5 +1,5 @@
 <?php
-require("../config/database.php");
+require_once("../config/database.php");
 
 class ServiceCategorie extends Database
 {
@@ -15,21 +15,41 @@ class ServiceCategorie extends Database
         $stmt = $this->db->prepare($new_categorie);
         $stmt->bindparam(":nomCat", $nom_categorie);
         $stmt->execute();
+        $categorieId = $this->db->lastInsertId();
+        return $categorieId;
     }
-    public function selectcategories()
+    public function selectCategories()
     {
         $this->db = $this->connect();
-        $querycategorie = "SELECT * FROM categorie ";
-        $query = $this->db->query($querycategorie);
+        $queryCategories = "SELECT * FROM categorie ";
+        $query = $this->db->query($queryCategories);
+    
         if ($query) {
             $categorieDB = $query->fetchAll(PDO::FETCH_ASSOC);
             $categories = array();
-            foreach ($categorieDB as $categori) {
-                $categories[] = new Categorie($categori["nomCategorie"]);
+    
+            foreach ($categorieDB as $category) {
+                // Use an associative array to pair category name with category ID
+                $categories[] = array(
+                    'idCategorie' => $category["idCategorie"],
+                    'nomCategorie' => $category["nomCategorie"]
+                );
             }
+    
             return $categories;
         }
+    
         return null;
     }
+    
+    // public function getPlanteCategorie(){
+
+    //    $db = $this->connect();
+    //     $queryId = "SELECT idCategorie ,nomCategorie FROM categorie";
+    //     $getcatgorie = $db->query($queryId);
+    //     $result = $getcatgorie->fetchAll(PDO::FETCH_ASSOC);
+    //     return $result;
+
+    // }
 }
 ?>
