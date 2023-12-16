@@ -58,6 +58,7 @@ class ServiceCategorie extends Database
             die($th->getMessage());
         }
     }
+    
     // public function getPlanteCategorie(){
 
     //    $db = $this->connect();

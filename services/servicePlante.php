@@ -70,7 +70,23 @@ class ServicePlante extends Database
         }
     }
 
-
+    public function plantParCat(){
+        $this->db = $this->connect();
+        $plantCat="SELECT
+        nomCategorie,
+        (SELECT COUNT(idPlante) FROM plante WHERE idCategorie = c.idCategorie) AS totalPlants
+        FROM
+        categorie AS c;
+        ";
+    $sqlRes=$this->db->query("$plantCat");
+    return $sqlRes->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function totalPlantes(){
+        $this->db = $this->connect();
+        $A="SELECT COUNT(idPlante) AS totalplante FROM plante  ";
+    $sqlA=$this->db->query("$A");
+    return $sqlA->fetch(PDO::FETCH_ASSOC);
+}
 }
 
 ?>

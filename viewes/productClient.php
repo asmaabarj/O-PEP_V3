@@ -1,29 +1,11 @@
 <?php
-require_once("../services/serviceUtilisateur.php");
 require_once("../services/servicePlante.php");
-require_once("../services/serviceCommande.php");
 
 
 
-
-$clientAffiche = new ServiceUtilisateur();
-$clients = $clientAffiche->showClients();
-
-
-$countplants = new ServicePlante();
-$countplantes = $countplants->plantParCat();
-
-$totalplants = new ServicePlante();
-$totalplantes = $totalplants->totalPlantes();
-
-$totalCommandes = new ServiceCommande();
-$totalCommande = $totalCommandes->TotalCommand();
-
-
-
+$planteafich = new ServicePlante();
+$Plantes = $planteafich->ShowPlantes();
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +19,7 @@ $totalCommande = $totalCommandes->TotalCommand();
 </head>
 
 <body>
+
     <header
         class="header sticky w-[100%] top-0 bg-white shadow-md flex items-center justify-between px-8 py-02 z-50 h-[10vh]	">
         <a href="productAdmin.php">
@@ -76,105 +59,51 @@ $totalCommande = $totalCommandes->TotalCommand();
     </header>
 
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <h1 class=" font-bold text-[20px] w-[100%] h-[10vh] flex items-center justify-center">CLIENTS</h1>
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th class="px-6 py-3">
-                        First name </th>
-                    <th class="px-6 py-3">
-                        Last name
-                    </th>
-                    <th class="px-6 py-3">
-                        E-mail
-                    </th>
 
 
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <?php foreach ($clients as $client):
-                    ?>
-                    <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <?= $client->getNomUtilisateur() ?>
-                        </th>
-                        <td class="px-6 py-4">
-                            <?= $client->getPrénomUtilisateur() ?>
-                        </td>
-                        <td class="px-6 py-4">
-                            <?= $client->getEmailUtilisateur() ?>
-                        </td>
 
 
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
 
+    <section class="flex flex-wrap justify-between w-[90%] m-auto">
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <h1 class=" font-bold text-[20px] w-[100%] h-[10vh] flex items-center justify-center">PLANTS </h1>
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th class="px-6 py-3">
-                        Categories name </th>
-                    <th class="px-6 py-3">
-                        plants number
-                    </th>
+        <?php foreach ($Plantes as $plant): ?>
+            <div class="h-[70vh] w-[23vw] m-[30px] ">
+                <div><img src="<?= $plant->getImagePlant() ?>" class="h-[50vh] w-[100%]"></div>
+                <div>
+                    <div>
+                        <h1 class="font-bold text-center">
+                            <?= $plant->getNomPlante() ?>
+                        </h1>
+                        <p class="uppercase text-green-800 font-semibold text-center">
+                            <?= $plant->getNomCategorie() ?>
+                        </p>
+                        <p class="font-normal text-center">
+                            <?= $plant->getPrix() ?> MAD
+                        </p>
+                    </div>
+                    <div class=" flex justify-center ">
+                        <form action="productAdmin.php" method="post"
+                            class=" flex w-[120px] font-semibold bg-green-600 mt-[10px] p-[4px] items-center rounded-[2px]">
+                            <input type="hidden" name="product_id" value="<?= $plant->getIdPlant() ?>">
+                            <button type="submit" class="cursor-pointer flex" name="basket" value="<?= $plant->getIdPlant() ?>">
+                                <p class="text-white text-xs">ADD TO BASKET</p>
 
-                </tr>
-            </thead>
+                                <svg class=" relative h-5 p-1 text-white duration-200" aria-hidden="true" focusable="false"
+                                    data-prefix="far" data-icon="shopping-cart" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                                    class="svg-inline--fa fa-shopping-cart fa-w-18 fa-7x">
+                                    <path fill="currentColor"
+                                        d="M551.991 64H144.28l-8.726-44.608C133.35 8.128 123.478 0 112 0H12C5.373 0 0 5.373 0 12v24c0 6.627 5.373 12 12 12h80.24l69.594 355.701C150.796 415.201 144 430.802 144 448c0 35.346 28.654 64 64 64s64-28.654 64-64a63.681 63.681 0 0 0-8.583-32h145.167a63.681 63.681 0 0 0-8.583 32c0 35.346 28.654 64 64 64 35.346 0 64-28.654 64-64 0-18.136-7.556-34.496-19.676-46.142l1.035-4.757c3.254-14.96-8.142-29.101-23.452-29.101H203.76l-9.39-48h312.405c11.29 0 21.054-7.869 23.452-18.902l45.216-208C578.695 78.139 567.299 64 551.991 64zM208 472c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm256 0c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm23.438-200H184.98l-31.31-160h368.548l-34.78 160z"
+                                        class=""></path>
+                                </svg>
+                        </form>
 
-            <tbody>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
 
-            <?php foreach ($countplantes as $countplante):
-                    ?>
-            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                <?= $countplante["nomCategorie"]?>
-                </th>
-                <td class="px-6 py-4">
-                <?= $countplante["totalPlants"] ?>
-                </td>
-                
-                
-            </tr><?php endforeach; ?>
-
-                <tr>
-                    <th class="px-6 py-3">TOTAL</th>
-                    <th>
-                        <?php echo $totalplantes["totalplante"]; ?>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="relative overflow-x-auto h-[30vh] shadow-md sm:rounded-lg">
-        <h1 class="font-bold text-[20px] w-[100%] h-[10vh] flex items-center justify-center">COMMANDE </h1>
-        <table class="w-[70%]  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th class="px-6 py-3">
-                        total commands </th>
-                    <td class="px-6 py-3">
-                        <?php echo $totalCommande["y"]; ?>
-                    </td>
-
-                </tr>
-            </thead>
-
-
-        </table>
-    </div>
-
-
+    </section>
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet"
         href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
@@ -220,6 +149,9 @@ $totalCommande = $totalCommandes->TotalCommand();
         </div>
     </footer>
 
+
+
+
     <script>
         function burgermenu() {
             const shown = document.querySelector('.sidebar')
@@ -230,6 +162,7 @@ $totalCommande = $totalCommandes->TotalCommand();
             shown.style.display = 'none'
         }
     </script>
+
 
 </body>
 
