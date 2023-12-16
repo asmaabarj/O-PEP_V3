@@ -1,15 +1,19 @@
 <?php
-include 'config.php';
+require_once("../config/database.php");
+require_once("../services/ServiceCategorie.php");
 
-if (isset($_POST['selectedCategoryName']) && isset($_POST['newCategoryName'])) {
-    $selectedCategoryName = $_POST['selectedCategoryName'];
-    $newCategoryName = $_POST['newCategoryName'];
+// Assuming that you have already fetched the available categories into $selectedCategory
+$serviceCategorie = new ServiceCategorie();
+$selectedCategory = $serviceCategorie->selectCategories();
 
-    if (!empty($newCategoryName)) {
-        $updateCategoryQuery = "UPDATE categorie SET nomCategorie = '$newCategoryName' WHERE nomCategorie = '$selectedCategoryName'";
-        mysqli_query($conn, $updateCategoryQuery);
-    } else {
-        $error = "Please enter a new category name.";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['categorySelect']) && isset($_POST['newCategoryName'])) {
+        $selectedCategoryName = $_POST['categorySelect'];
+        $newCategoryName = $_POST['newCategoryName'];
+
+        // Now you can perform the update operation using $selectedCategoryName and $newCategoryName
+        $affectedRows = $serviceCategorie->updateCategorie($selectedCategoryName, $newCategoryName);
+
     }
 }
 ?>
@@ -24,6 +28,7 @@ if (isset($_POST['selectedCategoryName']) && isset($_POST['newCategoryName'])) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
+<body>
 <body>
 <header class="header sticky w-[100%] top-0 bg-white shadow-md flex items-center justify-between px-8 py-02 z-50 h-[10vh]	">
     <a href="productAdmin.php">
@@ -50,20 +55,18 @@ if (isset($_POST['selectedCategoryName']) && isset($_POST['newCategoryName'])) {
 </header>
 
     <section class="flex justify-center items-center h-screen">
-        <form action="formUpdateCategory.php" method="POST" class="w-1/3">
+        <form action="" method="POST" class="w-1/3">
+            
             <?php if (isset($error)) : ?>
                 <p class="text-red-500"><?php echo $error; ?></p>
             <?php endif; ?>
             <div class="mb-4">
-                <label for="selectedCategoryName" class="block text-sm font-bold text-gray-600">Select Category to Update:</label>
-                <select name="selectedCategoryName" id="selectedCategoryName" class="border border-gray-300 p-2 w-full">
-                    <?php
-                    $categoryQuery = "SELECT nomCategorie FROM categorie";
-                    $result = mysqli_query($conn, $categoryQuery);
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo '<option value="' . $row['nomCategorie'] . '">' . $row['nomCategorie'] . '</option>';
-                    }
-                    ?>
+                <label for="categorySelect" class="block text-sm font-bold text-gray-600">Category to update:</label>
+                <select name="categorySelect" class="border border-gray-300 p-2 w-full">
+                    <option value="">Select a category to update</option>
+                    <?php foreach ($selectedCategory as $categorie) : ?>
+                        <option value="<?php echo $categorie["nomCategorie"] ?>"><?php echo $categorie["nomCategorie"] ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-4">

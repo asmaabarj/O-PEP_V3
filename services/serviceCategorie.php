@@ -41,7 +41,23 @@ class ServiceCategorie extends Database
     
         return null;
     }
+    public function updateCategorie($currentCategoryName, $newCategoryName)
+    {
+        $this->db = $this->connect();
     
+        $updateCategoryQuery = "UPDATE categorie SET nomCategorie = :newNomCat WHERE nomCategorie = :currentNomCat";
+        $stmt = $this->db->prepare($updateCategoryQuery);
+        $stmt->bindParam(":newNomCat", $newCategoryName);
+        $stmt->bindParam(":currentNomCat", $currentCategoryName);
+    
+        try {
+            $stmt->execute();
+            $affectedRows = $stmt->rowCount();
+            return $affectedRows;
+        } catch (PDOException $th) {
+            die($th->getMessage());
+        }
+    }
     // public function getPlanteCategorie(){
 
     //    $db = $this->connect();
