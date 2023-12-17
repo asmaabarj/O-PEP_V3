@@ -1,11 +1,11 @@
 <?php
-require("../../models/Categorie.php");
-require("../../services/serviceCategorie.php");
+require("../models/Categorie.php");
+require("../services/serviceCategorie.php");
 
-
+$idCategorie = '';
 if (isset($_POST["categoryName"])) {
 $nomCat = $_POST["categoryName"];
-$category = new Categorie($nomCat);
+$category = new Categorie($idCategorie,$nomCat);
 $serviceCat = new ServiceCategorie();
 $serviceCat->addCategorie($category);
 
@@ -37,9 +37,9 @@ $serviceCat->addCategorie($category);
                     </svg></a>
                     <a href="adminPage.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Dashboard</a>
                     <a href="productAdmin.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Show Product</a>
-                    <a href="formAddCategory.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
-                    <a href="formAddPlant.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
-                    <a href="formUpdateCategory.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
+                    <a href="addCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
+                    <a href="addPlante.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
+                    <a href="updateCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
                     <a href="index.php" class="p-4 border-b-2 border-green-500 text-red-600 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer mt-[30vh]">log out</a>
 
                 </div>

@@ -5,15 +5,15 @@ require_once("../services/ServiceCategorie.php");
 $serviceCategorie = new ServiceCategorie();
 $selectedCategory = $serviceCategorie->selectCategories();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['categorySelect']) && isset($_POST['newCategoryName'])) {
+
+    if (isset($_POST['submit'])) {
         $selectedCategoryName = $_POST['categorySelect'];
         $newCategoryName = $_POST['newCategoryName'];
 
         $affectedRows = $serviceCategorie->updateCategorie($selectedCategoryName, $newCategoryName);
 
     }
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="categorySelect" class="border border-gray-300 p-2 w-full">
                     <option value="">Select a category to update</option>
                     <?php foreach ($selectedCategory as $categorie) : ?>
-                        <option value="<?php echo $categorie["nomCategorie"] ?>"><?php echo $categorie["nomCategorie"] ?></option>
+                        <option value="<?=  $categorie->getIdCategorie() ?>"><?= $categorie->getNomCategorie() ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" name="newCategoryName" id="newCategoryName" class="border border-gray-300 p-2 w-full">
             </div>
             <div>
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Update Category</button>
+                <button type="submit" name="submit" class="bg-green-500 text-white px-4 py-2 rounded">Update Category</button>
             </div>
         </form>
     </section>

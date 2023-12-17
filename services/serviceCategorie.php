@@ -41,15 +41,15 @@ class ServiceCategorie extends Database
     {
         $this->db = $this->connect();
     
-        $updateCategoryQuery = "UPDATE categorie SET nomCategorie = :newNomCat WHERE nomCategorie = :currentNomCat";
+        $updateCategoryQuery = "UPDATE categorie SET nomCategorie = :newNomCat WHERE idCategorie = :currentNomCat";
         $stmt = $this->db->prepare($updateCategoryQuery);
         $stmt->bindParam(":newNomCat", $newCategoryName);
         $stmt->bindParam(":currentNomCat", $currentCategoryName);
     
         try {
-            $stmt->execute();
-            $affectedRows = $stmt->rowCount();
-            return $affectedRows;
+           $update =  $stmt->execute();
+            // $affectedRows = $stmt->rowCount();
+            return $update;
         } catch (PDOException $th) {
             die($th->getMessage());
         }
