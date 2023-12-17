@@ -1,25 +1,37 @@
 <?php
-session_start();
 
+session_start();
 require_once("../services/ServiceAuth.php");
+
 
 if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     $serviceAuth = new ServiceAuth();
-    $authResult = $serviceAuth->login(new utilisateur('', '', '', $email, $password));
-
+    $authResult = $serviceAuth->login($email);
+    var_dump($authResult);
+    
     if ($authResult) {
-        $_SESSION['user_type'] = $authResult['user_type'];
-        $_SESSION['idUtilisateur'] = $authResult['idUtilisateur'];
-        header("location: {$authResult['user_type']}Page.php");
-        exit();
+        $row = $authResult;
+        echo 'Hashed Password from Database: ' . $row['MdpUtilisateur'] . '<br>';
+        echo 'Hashed Password Entered: ' . password_hash($password, PASSWORD_DEFAULT) . '<br>';
+        
+        if ($row && password_verify($password, $row['MdpUtilisateur'])
+        ) {
+            $_SESSION['user_type'] = strtolower($row['nameRole']);
+            $_SESSION['idUtilisateur'] = $row['idUtilisateur'];
+            header("location: {$row['nameRole']}Page.php");
+            exit();
+        } else {
+            $error[] = 'Incorrect email or password!';
+        }
     } else {
         $error[] = 'Incorrect email or password!';
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

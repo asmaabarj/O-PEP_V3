@@ -1,4 +1,10 @@
+<?php
+require_once("../services/servicePanier.php");
 
+$servicePanier = new ServicePanier();
+
+$plantes = $servicePanier->ShowPanierplante();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,14 +38,40 @@
                 <div class="flex justify-between border-b pb-8">
                     <h1 class="font-semibold text-2xl">Shopping Cart</h1>
                     <h2 class="font-semibold text-2xl">
-                         Items
+                        <?php echo count($plantes); ?> Items
                     </h2>
                 </div>
                 <div class="flex gap-[19rem] mt-10 mb-5">
                     <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
                     <h3 class="font-semibold text-right text-gray-600 text-xs uppercase w-1/5 text-right">Price</h3>
                 </div>
-                
+                <?php
+                if (count($plantes) > 0) {
+               foreach ($plantes as $plante) {
+               
+                        ?>
+                        <div class="flex items-center justify-between hover:bg-gray-100 -mx-8 px-6 py-5">
+                            <div class="flex w-2/5">
+                                <div class="w-20">
+                                    <img class="h-24" src="<?= $plante->getImagePlant() ?>" alt="">
+                                </div>
+                                <div class="flex flex-col justify-around ml-4 flex-grow">
+                                    <span class="font-bold text-sm">
+                                    <?= $plante->getNomPlante() ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="text-center w-1/5 font-semibold text-sm">
+                            <?= $plante->getPrix() ?> MAD
+                            </span>
+                     
+                        </div>
+                        <?php
+                    }}
+                else {
+                    echo "No items in the cart.";
+                }
+                ?>
                 <div class="flex justify-between items-center">
                 <a href="productClient.php" class="flex font-semibold text-indigo-600 text-sm mt-10">
                     <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512">
@@ -58,9 +90,21 @@
         <div class="border-t mt-8 ">
             <div class="flex font-semibold justify-between  py-6 text-sm uppercase">
                 <span>Total cost</span>
-                
+                <?php
+                $totalCost = 0;
+
+                $result->data_seek(0);
+                while ($row = $result->fetch_assoc()) {
+                    $totalCost += $row['prix'];
+                }
+
+                echo '<span>' . $totalCost . ' MAD</span>';
+                ?>
             </div>
+            <?php
             
+                    $row = $result->fetch_assoc();
+                        ?>
             <form action="panier.php" method="post" onsubmit="return confirmCommand();"><input type="hidden" name="commander" value="<?php echo $userId; ?>">
 <input type ="submit" value="command" name="command" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
 </form>

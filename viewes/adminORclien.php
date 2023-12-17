@@ -23,6 +23,8 @@ $serviceUser->addUser($Newuser);
   $idRole = $serviceRole->selectIdRole($admin);
   $Newuser = new utilisateur($idRole,$lname,$fname,$email,$password);
   $serviceUser->addUser($Newuser);
+  header('location: login.php');
+
 }
 ?>
 

@@ -102,12 +102,21 @@ class ServicePlante extends Database
     return $plantes;
 }
    
+public function selectplantes($id){
+
+    $db = $this->connect();
+
+    $query = "SELECT * FROM plante WHERE idPlante = $id";
+    $plantes = $db->query($query);
+    $result = $plantes->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
 
  }
    
 
 
-
+}
 
 
 

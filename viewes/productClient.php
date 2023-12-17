@@ -1,15 +1,23 @@
 <?php
+session_start();
+
 require_once("../services/servicePlante.php");
 require("../services/serviceCategorie.php");
-
-
+require("../services/servicePanier.php");
+$isUser =$_SESSION['idUtilisateur'];
+$idPanier = '';
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-
+$panierService = new ServicePanier();
 $planteafich = new ServicePlante();
 $Plantes = $planteafich->ShowPlantes($searchTerm);
 
 $serviceCat = new ServiceCategorie();
 $selectedCategorys = $serviceCat->selectCategories();
+if (isset($_POST['product_id']) && isset($_POST['basket']) ) {
+    $idplante  = $_POST['basket'];
+   $panierService->insertPanier($isUser,$idplante);
+
+}
 
 ?>
 
@@ -118,7 +126,7 @@ foreach ($filterplant as $plant) {?>
             </p>
         </div>
         <div class=" flex justify-center ">
-            <form action="productAdmin.php" method="post"
+            <form action="productClient.php" method="post"
                 class=" flex w-[120px] font-semibold bg-green-600 mt-[10px] p-[4px] items-center rounded-[2px]">
                 <input type="hidden" name="product_id" value="<?= $plant->getIdPlant() ?>">
                 <button type="submit" class="cursor-pointer flex" name="basket" value="<?= $plant->getIdPlant() ?>">
@@ -157,7 +165,7 @@ foreach ($filterplant as $plant) {?>
                         </p>
                     </div>
                     <div class=" flex justify-center ">
-                        <form action="productAdmin.php" method="post"
+                        <form action="productClient.php" method="post"
                             class=" flex w-[120px] font-semibold bg-green-600 mt-[10px] p-[4px] items-center rounded-[2px]">
                             <input type="hidden" name="product_id" value="<?= $plant->getIdPlant() ?>">
                             <button type="submit" class="cursor-pointer flex" name="basket" value="<?= $plant->getIdPlant() ?>">

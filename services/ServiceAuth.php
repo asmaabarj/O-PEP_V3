@@ -7,32 +7,26 @@ class ServiceAuth extends Database
 {
     protected $db;
 
-    public function login(utilisateur $utilisateur)
+    public function login($email)
     {
-        $this->db = $this->connect();
-
-        $email = $utilisateur->getEmailUtilisateur();
-        $password = $utilisateur->getMdpUtilisateur();
+        $db = $this->connect();
 
         $select = "SELECT utilisateur.*, roles.nameRole
                    FROM utilisateur
                    INNER JOIN roles ON utilisateur.idRole = roles.idRole
                    WHERE utilisateur.emailUtilisateur = :email";
 
-        $stmt = $this->db->prepare($select);
+        $stmt = $db->prepare($select);
         $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($row && password_verify($password, $row['MdpUtilisateur'])) {
-            return [
-                'user_type' => strtolower($row['nameRole']),
-                'idUtilisateur' => $row['idUtilisateur']
-            ];
-        } else {
-            return false;
-        }
+        // Fetch the data
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+        
+        
     }
 }
+
 ?>

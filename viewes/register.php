@@ -1,28 +1,32 @@
 <?php
 require_once("../services/serviceUtilisateur.php");
+
 if (isset($_POST['submit'])) {
     $lname = $_POST['lname'];
     $fname = $_POST['fname'];
     $email = $_POST['email'];
-    $pass = md5($_POST['password']);
-    $cpass = md5($_POST['cpassword']);
- 
+    $password = $_POST['password'];
+    $cpassword = $_POST['cpassword'];
+
     $serviceUser = new ServiceUtilisateur();
     $users = $serviceUser->showUsers($email);
 
-
-if (count($users) > 0) {
-    $error[] = 'User already exists!';
-} else {
-    if ($pass != $cpass) {
-        $error[] = 'Password not matched!';
+    if (count($users) > 0) {
+        $error[] = 'User already exists!';
     } else {
-        header("location: adminORclien.php?lname=$lname&fname=$fname&email=$email&password=$pass");
-       
+        if ($password != $cpassword) {
+            $error[] = 'Password not matched!';
+        } else {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+          
+            header("location: adminORclien.php?lname=$lname&fname=$fname&email=$email&password=$hashedPassword");
+            exit(); 
+        }
     }
 }
-}
 ?>
+
 
 
 <!DOCTYPE html>
