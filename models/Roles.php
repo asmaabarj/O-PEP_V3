@@ -1,6 +1,6 @@
 <?php
 
-class Categorie
+class role
 {
     private $idRole;
     private $nameRole;

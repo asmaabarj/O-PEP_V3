@@ -3,6 +3,7 @@
 require_once("../config/database.php");
 require_once("../models/plante.php");
 require_once("../models/Product.php");
+require_once("../models/count.php");
 
 
 class ServicePlante extends Database
@@ -30,12 +31,15 @@ class ServicePlante extends Database
 
         $stmt->execute();
     }
-    public function ShowPlantes()
+    public function ShowPlantes($searchTerm)
     {
         $this->db = $this->connect();
 
         $query = "SELECT p.*, c.nomCategorie
-            FROM plante p JOIN categorie c ON p.idCategorie = c.idCategorie";
+          FROM plante p
+          JOIN categorie c ON p.idCategorie = c.idCategorie
+          WHERE nomPlante LIKE '%$searchTerm%'";
+
 
         $plants = $this->db->query($query);
         $result = $plants->fetchAll(PDO::FETCH_ASSOC);
@@ -70,23 +74,46 @@ class ServicePlante extends Database
         }
     }
 
-    public function plantParCat(){
-        $this->db = $this->connect();
-        $plantCat="SELECT
-        nomCategorie,
-        (SELECT COUNT(idPlante) FROM plante WHERE idCategorie = c.idCategorie) AS totalPlants
-        FROM
-        categorie AS c;
-        ";
-    $sqlRes=$this->db->query("$plantCat");
-    return $sqlRes->fetchAll(PDO::FETCH_ASSOC);
+ public function FilterPlant($id){
+    $db = $this->connect();
+    $query= "SELECT p.*, c.nomCategorie
+    FROM plante p
+    JOIN categorie c ON p.idCategorie = c.idCategorie
+    WHERE  p.idCategorie = $id";
+
+    $filterplante = $db->query($query);
+
+    $result = $filterplante->fetchAll(PDO::FETCH_ASSOC);
+    $plantes = array();
+
+    foreach ($result as $plnt) {
+        $combinedData = new Product(
+            $plnt["nomPlante"],
+            $plnt["idCategorie"],
+            $plnt["imagePlant"],
+            $plnt["prix"],
+            $plnt["nomCategorie"],
+            $plnt["idPlante"]
+        );
+
+        $plantes[] = $combinedData;
     }
-    public function totalPlantes(){
-        $this->db = $this->connect();
-        $A="SELECT COUNT(idPlante) AS totalplante FROM plante  ";
-    $sqlA=$this->db->query("$A");
-    return $sqlA->fetch(PDO::FETCH_ASSOC);
+
+    return $plantes;
 }
-}
+   
+
+ }
+   
+
+
+
+
+
+
+
+
+
+
 
 ?>

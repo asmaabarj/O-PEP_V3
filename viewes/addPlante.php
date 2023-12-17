@@ -51,9 +51,9 @@ $selectedCategory = $serviceCat->selectCategories();
                     </svg></a>
                     <a href="adminPage.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Dashboard</a>
                     <a href="productAdmin.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Show Product</a>
-                    <a href="formAddCategory.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
-                    <a href="formAddPlant.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
-                    <a href="formUpdateCategory.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
+                    <a href="addCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
+                    <a href="addPlante.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
+                    <a href="updateCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
                     <a href="index.php" class="p-4 border-b-2 border-green-500 text-red-600 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer mt-[30vh]">log out</a>
 
                 </div>
@@ -83,7 +83,7 @@ $selectedCategory = $serviceCat->selectCategories();
     <?php
     
      foreach ($selectedCategory as $categorie) : ?>
-<option value="<?php echo $categorie["idCategorie"] ?>"><?php echo $categorie["nomCategorie"] ?></option>
+<option value="<?= $categorie->getIdCategorie() ?>"><?=  $categorie->getNomCategorie() ?></option>
     <?php endforeach; ?>
 </select>
 

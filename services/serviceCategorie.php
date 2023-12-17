@@ -1,6 +1,6 @@
 <?php
 require_once("../config/database.php");
-
+require_once("../models/Categorie.php");
 class ServiceCategorie extends Database
 {
 
@@ -29,11 +29,7 @@ class ServiceCategorie extends Database
             $categories = array();
     
             foreach ($categorieDB as $category) {
-                // Use an associative array to pair category name with category ID
-                $categories[] = array(
-                    'idCategorie' => $category["idCategorie"],
-                    'nomCategorie' => $category["nomCategorie"]
-                );
+                $categories[] = new Categorie($category["idCategorie"], $category["nomCategorie"]);
             }
     
             return $categories;

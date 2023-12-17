@@ -2,24 +2,25 @@
 require_once("../services/serviceUtilisateur.php");
 require_once("../services/servicePlante.php");
 require_once("../services/serviceCommande.php");
+require_once("../services/serviceCount.php");
+
+?>
 
 
-
+<?php
 
 $clientAffiche = new ServiceUtilisateur();
 $clients = $clientAffiche->showClients();
 
 
-$countplants = new ServicePlante();
+$countplants = new ServiceCount();
 $countplantes = $countplants->plantParCat();
 
-$totalplants = new ServicePlante();
-$totalplantes = $totalplants->totalPlantes();
+$totalplants = new ServiceCount();
+$totalplantes = $totalplants->totalPlant();
 
-$totalCommandes = new ServiceCommande();
-$totalCommande = $totalCommandes->TotalCommand();
-
-
+$totalCommande = new ServiceCount();
+$totalCommand = $totalCommande->TotalCommand();
 
 ?>
 
@@ -37,43 +38,29 @@ $totalCommande = $totalCommandes->TotalCommand();
 </head>
 
 <body>
-    <header
-        class="header sticky w-[100%] top-0 bg-white shadow-md flex items-center justify-between px-8 py-02 z-50 h-[10vh]	">
-        <a href="productAdmin.php">
-            <img src="images/logoPage.png" alt="" class="md:h-[50px] md:w-[100px] h-[35px] w-[90px]">
-        </a>
+<header class="header sticky w-[100%] top-0 bg-white shadow-md flex items-center justify-between px-8 py-02 z-50 h-[10vh]	">
+    <a href="productAdmin.php">
+        <img src="images/logoPage.png" alt="" class="md:h-[50px] md:w-[100px] h-[35px] w-[90px]">
+    </a>
 
-        <div
-            class="sidebar fixed top-0 right-0 h-screen w-[20%] bg-white flex flex-col items-center justify-start z-50 hidden font-semibold w-[100%] text-lg">
-            <a href="#" onclick=quittemenu() class="mt-2.5"><svg xmlns="http://www.w3.org/2000/svg" height="24"
-                    viewBox="0 -960 960 960" width="24" fill="black">
-                    <path
-                        d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+    <div
+                    class="sidebar fixed top-0 right-0 h-screen w-[20%] bg-white flex flex-col items-center justify-start z-50 hidden font-semibold w-[100%] text-lg">
+                    <a href="#" onclick=quittemenu() class="mt-2.5" ><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"
+                        fill="black"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                    </svg></a>
+                    <a href="adminPage.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Dashboard</a>
+                    <a href="productAdmin.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Show Product</a>
+                    <a href="addCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
+                    <a href="addPlante.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
+                    <a href="updateCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
+                    <a href="index.php" class="p-4 border-b-2 border-green-500 text-red-600 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer mt-[30vh]">log out</a>
+
+                </div>
+                <a href="#" onclick=burgermenu() class=" block "><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"
+                    fill='black'>
+                    <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg></a>
-            <a href="adminPage.php"
-                class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Dashboard</a>
-            <a href="productAdmin.php"
-                class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Show
-                Product</a>
-            <a href="formAddCategory.php"
-                class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add
-                Category</a>
-            <a href="formAddPlant.php"
-                class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add
-                Plant</a>
-            <a href="formUpdateCategory.php"
-                class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update
-                Category</a>
-            <a href="index.php"
-                class="p-4 border-b-2 border-green-500 text-red-600 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer mt-[30vh]">log
-                out</a>
-
-        </div>
-        <a href="#" onclick=burgermenu() class=" block "><svg xmlns="http://www.w3.org/2000/svg" height="24"
-                viewBox="0 -960 960 960" width="24" fill='black'>
-                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-            </svg></a>
-    </header>
+</header>
 
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -133,23 +120,24 @@ $totalCommande = $totalCommandes->TotalCommand();
 
             <tbody>
 
-            <?php foreach ($countplantes as $countplante):
+                <?php foreach ($countplantes as $countplante):
                     ?>
-            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                <?= $countplante["nomCategorie"]?>
-                </th>
-                <td class="px-6 py-4">
-                <?= $countplante["totalPlants"] ?>
-                </td>
-                
-                
-            </tr><?php endforeach; ?>
+                    <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <?= $countplante->getNomCategorie() ?>
+                        </th>
+                        <td class="px-6 py-4">
+                            <?= $countplante->getTotalPlante() ?>
+                        </td>
+
+
+                    </tr>
+                <?php endforeach; ?>
 
                 <tr>
                     <th class="px-6 py-3">TOTAL</th>
                     <th>
-                        <?php echo $totalplantes["totalplante"]; ?>
+                        <?= $totalplantes->getTotalPlante() ?>
                     </th>
                 </tr>
             </tbody>
@@ -164,7 +152,7 @@ $totalCommande = $totalCommandes->TotalCommand();
                     <th class="px-6 py-3">
                         total commands </th>
                     <td class="px-6 py-3">
-                        <?php echo $totalCommande["y"]; ?>
+                        <?= $totalCommand->getTotalCommand() ?>
                     </td>
 
                 </tr>

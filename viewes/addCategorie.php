@@ -1,6 +1,6 @@
 <?php
-require("../models/Categorie.php");
-require("../services/serviceCategorie.php");
+require("../../models/Categorie.php");
+require("../../services/serviceCategorie.php");
 
 
 if (isset($_POST["categoryName"])) {

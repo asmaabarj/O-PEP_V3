@@ -2,7 +2,6 @@
 require_once("../config/database.php");
 require_once("../services/ServiceCategorie.php");
 
-// Assuming that you have already fetched the available categories into $selectedCategory
 $serviceCategorie = new ServiceCategorie();
 $selectedCategory = $serviceCategorie->selectCategories();
 
@@ -11,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $selectedCategoryName = $_POST['categorySelect'];
         $newCategoryName = $_POST['newCategoryName'];
 
-        // Now you can perform the update operation using $selectedCategoryName and $newCategoryName
         $affectedRows = $serviceCategorie->updateCategorie($selectedCategoryName, $newCategoryName);
 
     }
@@ -42,9 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </svg></a>
                     <a href="adminPage.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Dashboard</a>
                     <a href="productAdmin.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Show Product</a>
-                    <a href="formAddCategory.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
-                    <a href="formAddPlant.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
-                    <a href="formUpdateCategory.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
+                    <a href="addCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Category</a>
+                    <a href="addPlante.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">Add Plant</a>
+                    <a href="updateCategorie.php" class="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer ">Update Category</a>
                     <a href="index.php" class="p-4 border-b-2 border-green-500 text-red-600 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer mt-[30vh]">log out</a>
 
                 </div>
