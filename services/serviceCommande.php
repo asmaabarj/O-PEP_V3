@@ -20,7 +20,17 @@ return $sqlx->fetch(PDO::FETCH_ASSOC);
     
 }
 
-    
+public function insertCommand($idutilisateur,$idPlant){
+    $db = $this->connect();
+
+
+
+    $new_panier = "INSERT INTO commande (idutilisateur,idPlante) VALUES (:idutilisateur,:idPlant)";
+    $stmt = $db->prepare($new_panier);
+    $stmt->bindparam(":idutilisateur", $idutilisateur);
+    $stmt->bindparam(":idPlant", $idPlant);
+    $stmt->execute();
+}   
   
 
 }

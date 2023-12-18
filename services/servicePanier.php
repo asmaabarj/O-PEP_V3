@@ -21,12 +21,12 @@ class ServicePanier extends Database
     $stmt->execute();
 }
  
-public function ShowPanierplante() {
+public function ShowPanierplante($id) {
     $db = $this->connect();
 
     $query = "SELECT p.*
         FROM plante p 
-        JOIN panier pa ON p.idPlante = pa.idPlante ";
+        JOIN panier pa ON p.idPlante = pa.idPlante where pa.idUtilisateur=$id ";
     $panier = $db->query($query);
     $result = $panier->fetchAll(PDO::FETCH_ASSOC);
 
@@ -54,9 +54,9 @@ public function ShowPanierplante() {
 }
 
 
-public function clearPanier(){
+public function clearPanier($id){
     $this->db = $this->connect();
-    $deletePanier = "DELETE FROM panier";
+    $deletePanier = "DELETE FROM panier where idUtilisateur=$id";
     $statement = $this->db->prepare($deletePanier);
     try {
         $statement->execute();
@@ -66,7 +66,19 @@ public function clearPanier(){
 }
 
 
+public function commandpanier($id) {
+    $db = $this->connect();
+    $query = "SELECT idPlante FROM panier WHERE idUtilisateur = :userId";
+    $statement = $db->prepare($query);
 
+    $statement->bindParam(':userId', $id, PDO::PARAM_INT);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
+}
 
 
 

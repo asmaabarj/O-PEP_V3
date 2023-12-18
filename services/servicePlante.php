@@ -113,7 +113,7 @@ public function selectplantes($id){
     return $result;
 
  }
-   
+
 
 
 }

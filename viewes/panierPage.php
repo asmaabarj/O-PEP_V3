@@ -1,14 +1,21 @@
 <?php
 session_start();
 require_once("../services/servicePanier.php");
+require_once("../services/serviceCommande.php");
+require_once("../services/servicePlante.php");
 
+$userId = $_SESSION['idUtilisateur'];
+$servicePlante = new ServicePlante();
 $servicePanier = new ServicePanier();
+$serviceCommand = new ServiceCommande();
+
+
 
 if (isset($_POST['Clear'])) {
-    $servicePanier->clearPanier();
+    $servicePanier->clearPanier($userId);
 }
 
-$plantess = $servicePanier->ShowPanierplante();
+$plantess = $servicePanier->ShowPanierplante($userId);
 $countplant = 0;
 $plantes = [];
 
@@ -17,6 +24,17 @@ if ($plantess !== null && is_array($plantess) && array_key_exists('count', $plan
     $plantes = $plantess['plantes'];
 }
 
+
+if (  isset($_POST['command']) ) {
+
+   $planteIds = $servicePanier->commandpanier($userId);
+   foreach ($planteIds as $planteId ) {
+    $serviceCommand->insertCommand($userId,$planteId["idPlante"]);
+    $servicePanier->clearPanier($userId);   }
+    
+
+                header("location: panierPage.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -118,14 +136,10 @@ if ($plantess !== null && is_array($plantess) && array_key_exists('count', $plan
                  ?>
 
             </div>
-        
-
-
-           
-
-
-            <form action="panierPage.php" method="post" onsubmit="return confirmCommand();"><input type="hidden" name="commander" value="<?php echo $userId; ?>">
-<input type ="submit" value="command" name="command" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
+                  
+            <form action="panierPage.php" method="post" onsubmit="return confirmCommand();">
+            <!-- <input type="hidden" name="commander" value=""> -->
+            <input type ="submit" value="command" name="command" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
 </form>
 <?php
 
