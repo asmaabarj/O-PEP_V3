@@ -1,27 +1,21 @@
 <?php
+session_start();
 require_once("../services/servicePanier.php");
 
 $servicePanier = new ServicePanier();
 
 if (isset($_POST['Clear'])) {
-    
     $servicePanier->clearPanier();
-
 }
+
 $plantess = $servicePanier->ShowPanierplante();
-$c = $plantess['count'];
-    if($c > 0) {
-        $countplant =  $plantess['count'];
-        $plantes = $plantess['plantes'];
-    }
-    else {
+$countplant = 0;
+$plantes = [];
 
-        $countplant = 0;
-        $plantes = 0;
-    }
-    
-
-
+if ($plantess !== null && is_array($plantess) && array_key_exists('count', $plantess) && array_key_exists('plantes', $plantess)) {
+    $countplant = $plantess['count'];
+    $plantes = $plantess['plantes'];
+}
 
 ?>
 
@@ -57,7 +51,7 @@ $c = $plantess['count'];
                 <div class="flex justify-between border-b pb-8">
                     <h1 class="font-semibold text-2xl">Shopping Cart</h1>
                     <h2 class="font-semibold text-2xl">
-                        <?php echo $countplant ?> Items
+                        <?=  $countplant ?> Items
                     </h2>
                 </div>
                 <div class="flex gap-[19rem] mt-10 mb-5">
@@ -111,15 +105,25 @@ $c = $plantess['count'];
                 <span>Total cost</span>
                 <?php
               $totalCost = 0;
+              if (!empty($plantes)) {
+
               foreach ($plantes as $plante) {
               $totalCost += $plante->getPrix();
              }
 
              echo '<span>' . $totalCost . ' MAD</span>';
+            } else {
+                echo '<span>0 MAD</span>';
+            }
                  ?>
 
             </div>
         
+
+
+           
+
+
             <form action="panierPage.php" method="post" onsubmit="return confirmCommand();"><input type="hidden" name="commander" value="<?php echo $userId; ?>">
 <input type ="submit" value="command" name="command" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
 </form>

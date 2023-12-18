@@ -2,12 +2,10 @@
 
 require_once("../config/database.php");
 require_once("../models/countPlant.php");
-require_once("../models/countCommande.php");
 require_once("../models/count.php");
 require_once("../models/countItems.php");
-require_once("../models/panier.php");
 
-class ServiceCount extends Database
+class ServiceCountItems extends Database
 {
     protected $db;
 
@@ -57,28 +55,6 @@ class ServiceCount extends Database
 
         return $countCommande;
     }
-    public function getTotalItems()
-    {
-        $this->db = $this->connect();
-        $X = "SELECT COUNT(idPlante) AS totalItems FROM panier";
-        $sqlX = $this->db->query("$X");
-
-
-        $countItems = new CountItems($sqlX->fetch(PDO::FETCH_ASSOC)['totalItems']);
-
-        return $countItems;
-    }
 }
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
