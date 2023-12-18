@@ -3,7 +3,26 @@ require_once("../services/servicePanier.php");
 
 $servicePanier = new ServicePanier();
 
-$plantes = $servicePanier->ShowPanierplante();
+if (isset($_POST['Clear'])) {
+    
+    $servicePanier->clearPanier();
+
+}
+$plantess = $servicePanier->ShowPanierplante();
+$c = $plantess['count'];
+    if($c > 0) {
+        $countplant =  $plantess['count'];
+        $plantes = $plantess['plantes'];
+    }
+    else {
+
+        $countplant = 0;
+        $plantes = 0;
+    }
+    
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +57,7 @@ $plantes = $servicePanier->ShowPanierplante();
                 <div class="flex justify-between border-b pb-8">
                     <h1 class="font-semibold text-2xl">Shopping Cart</h1>
                     <h2 class="font-semibold text-2xl">
-                        <?php echo count($plantes); ?> Items
+                        <?php echo $countplant ?> Items
                     </h2>
                 </div>
                 <div class="flex gap-[19rem] mt-10 mb-5">
@@ -46,7 +65,7 @@ $plantes = $servicePanier->ShowPanierplante();
                     <h3 class="font-semibold text-right text-gray-600 text-xs uppercase w-1/5 text-right">Price</h3>
                 </div>
                 <?php
-                if (count($plantes) > 0) {
+                if ($countplant > 0) {
                foreach ($plantes as $plante) {
                
                         ?>
@@ -80,7 +99,7 @@ $plantes = $servicePanier->ShowPanierplante();
                     </svg>
                     Continue Shopping
                 </a>
-                <form action="panier.php" method="post">
+                <form action="panierPage.php" method="post">
                 <input class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer" type="submit" name="Clear" value="Clear Basket"></form>
                 </div>
             </div>
@@ -91,21 +110,17 @@ $plantes = $servicePanier->ShowPanierplante();
             <div class="flex font-semibold justify-between  py-6 text-sm uppercase">
                 <span>Total cost</span>
                 <?php
-                $totalCost = 0;
+              $totalCost = 0;
+              foreach ($plantes as $plante) {
+              $totalCost += $plante->getPrix();
+             }
 
-                $result->data_seek(0);
-                while ($row = $result->fetch_assoc()) {
-                    $totalCost += $row['prix'];
-                }
+             echo '<span>' . $totalCost . ' MAD</span>';
+                 ?>
 
-                echo '<span>' . $totalCost . ' MAD</span>';
-                ?>
             </div>
-            <?php
-            
-                    $row = $result->fetch_assoc();
-                        ?>
-            <form action="panier.php" method="post" onsubmit="return confirmCommand();"><input type="hidden" name="commander" value="<?php echo $userId; ?>">
+        
+            <form action="panierPage.php" method="post" onsubmit="return confirmCommand();"><input type="hidden" name="commander" value="<?php echo $userId; ?>">
 <input type ="submit" value="command" name="command" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
 </form>
 <?php

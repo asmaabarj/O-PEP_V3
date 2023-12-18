@@ -65,13 +65,13 @@ if (isset($_POST['product_id']) && isset($_POST['basket']) ) {
                 onkeydown="if (event.key === 'Enter') { this.form.submit(); }">
         </form>
 
-        <a href="panier.php">
+        <a href="panierPage.php">
             <div style="position: relative;">
                 <?php
                 echo '<p class="rounded-full  h-[17px] w-[17px] text-[10px] flex justify-center items-center bg-green-500 absolute top-0 right-0">'. 0 .'</p>';
                 ?>
 
-                <a href="panier.php" value="">
+                <a href="panierPage.php" value="">
                     <svg class="h-8 p-1 hover:text-green-500 duration-200" aria-hidden="true" focusable="false"
                         data-prefix="far" data-icon="shopping-cart" role="img" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 576 512" class="svg-inline--fa fa-shopping-cart fa-w-18 fa-7x">

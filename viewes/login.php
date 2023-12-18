@@ -79,7 +79,7 @@ echo 'Hashed Password Entered: ' . password_hash($password, PASSWORD_DEFAULT) . 
                     <input type="password" name="password" required placeholder="Enter Your password" class="outline-none h-[3rem] w-[85%] p-[5px] rounded">
                     <div class="w-[85%]"></div>
                     <input type="submit" name="submit" value="login now" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 w-[85%] rounded cursor-pointer">
-                    <p>don't have an account?<a class="text-green-700" href="registerPage.php">register now</a></p>
+                    <p>don't have an account?<a class="text-green-700" href="register.php">register now</a></p>
                 </form>
             </div>
         </div>
