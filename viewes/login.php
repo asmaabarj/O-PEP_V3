@@ -10,13 +10,12 @@ if (isset($_POST['submit'])) {
 
     $serviceAuth = new ServiceAuth();
     $authResult = $serviceAuth->login($email);
-    var_dump($authResult);
     
     if ($authResult) {
         $row = $authResult;
-        echo 'Hashed Password from Database: ' . $row['MdpUtilisateur'] . '<br>';
-        echo 'Hashed Password Entered: ' . password_hash($password, PASSWORD_DEFAULT) . '<br>';
-        
+echo 'Hashed Password from Database: ' . $row['MdpUtilisateur'] . '<br>';
+echo 'Hashed Password Entered: ' . password_hash($password, PASSWORD_DEFAULT) . '<br>';
+
         if ($row && password_verify($password, $row['MdpUtilisateur'])
         ) {
             $_SESSION['user_type'] = strtolower($row['nameRole']);
