@@ -130,7 +130,7 @@
                     sign in
                 </button>
         </a>
-        <a href="registerPage.php">
+        <a href="register.php">
         <button class="bg-green-500 hover:bg-white text-white w-[6rem] h-[2rem] font-medium hover:text-black border-[1px] pb-1 px-4 ml-[10px]  border-white  rounded">
                     sign up
                 </button>
