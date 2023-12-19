@@ -48,21 +48,10 @@ class ServiceCategorie extends Database
     
         try {
            $update =  $stmt->execute();
-            // $affectedRows = $stmt->rowCount();
             return $update;
         } catch (PDOException $th) {
             die($th->getMessage());
         }
     }
-    
-    // public function getPlanteCategorie(){
-
-    //    $db = $this->connect();
-    //     $queryId = "SELECT idCategorie ,nomCategorie FROM categorie";
-    //     $getcatgorie = $db->query($queryId);
-    //     $result = $getcatgorie->fetchAll(PDO::FETCH_ASSOC);
-    //     return $result;
-
-    // }
 }
 ?>

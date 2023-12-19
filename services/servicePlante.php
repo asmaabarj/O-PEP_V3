@@ -113,7 +113,14 @@ public function selectplantes($id){
     return $result;
 
  }
-
+ public function commandpanier($id){
+    $db = $this->connect();
+    $query = "SELECT idPlante FROM plante WHERE idUtilisateur=$id";
+    $statement = $db->prepare($query);
+    $statement->execute();
+    
+}
+   
 
 
 }

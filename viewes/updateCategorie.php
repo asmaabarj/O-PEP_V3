@@ -6,7 +6,7 @@ $serviceCategorie = new ServiceCategorie();
 $selectedCategory = $serviceCategorie->selectCategories();
 
 
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['categorySelect']) && isset($_POST['newCategoryName'])) {
         $selectedCategoryName = $_POST['categorySelect'];
         $newCategoryName = $_POST['newCategoryName'];
 

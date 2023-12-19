@@ -138,7 +138,6 @@ if (  isset($_POST['command']) ) {
             </div>
                   
             <form action="panierPage.php" method="post" onsubmit="return confirmCommand();">
-            <!-- <input type="hidden" name="commander" value=""> -->
             <input type ="submit" value="command" name="command" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
 </form>
 <?php

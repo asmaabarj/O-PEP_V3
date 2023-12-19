@@ -1,18 +1,21 @@
 <?php
-require("../models/Categorie.php");
-require("../services/serviceCategorie.php");
+require_once("../models/Categorie.php");
+require_once("../services/serviceCategorie.php");
 
 $idCategorie = '';
+
 if (isset($_POST["categoryName"])) {
-$nomCat = $_POST["categoryName"];
-$category = new Categorie($idCategorie,$nomCat);
-$serviceCat = new ServiceCategorie();
-$serviceCat->addCategorie($category);
+    $nomCat = $_POST["categoryName"];
+    
+    $category = new Categorie($idCategorie, '');
 
-}   
+    $category->setNomCategorie($nomCat);
+
+    $serviceCat = new ServiceCategorie();
+
+    $serviceCat->addCategorie($category);
+}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,12 +67,7 @@ $serviceCat->addCategorie($category);
             </div>
         </form>
     </section>
-
-
-
 </section>
-
-
 <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet"
         href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
@@ -114,7 +112,6 @@ $serviceCat->addCategorie($category);
             <h2 class="text-center" >Copyright © 2023 Hashtag O'PEP. All Rights Reserved</h2>
         </div>
     </footer>
-
 
     <script>
     function burgermenu(){
